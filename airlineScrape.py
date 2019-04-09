@@ -15,22 +15,22 @@ if not os.path.exists("chs-destination_html"):
 browser = webdriver.Chrome()
 
 # Temp URL with no real destination
-url = "https://www.expedia.com/Flights-Search?trip=oneway&leg1=from:chs,to:XXXXXXXXXXXX,departure:04/16/2019TANYT&passengers=adults:1,children:0,seniors:0,infantinlap:Y&options=cabinclass%3Aeconomy&mode=search&origref=www.expedia.com.php"
+url = "https://www.expedia.com/Flights-Search?trip=oneway&leg1=from:chs,to:nyc,departure:04/16/2019TANYT&passengers=adults:1,children:0,seniors:0,infantinlap:Y&options=cabinclass%3Aeconomy&mode=search&origref=www.expedia.com.php"
 
 # This command uses selenium to open a browser to truly act like a deveoper 
 # It makes it so you can scrape webpages loaded by javaScript / have a lot of scraping preventions
 browser.get(url)
 
+# Lets sleep for a little bit after requesting the URL so all the JS can execute and we can get all the results
+time.sleep(10)
+
 # The script is executed which gets all the HTML from the website, even the part executed in JS
 innerHTML = browser.execute_script("return document.body.innerHTML")
 
 # A file is created with the destination city in the file name and the HTML is written to it
-outputFile = open("chs-destination_html/<chs-desination>.html", "w")
+# You write to the file with just 'w' instead of 'wb' because the htlm is of type 'string' and not 'byte'
+outputFile = open("chs-destination_html/<chs-desination2>.html", "w")
 outputFile.write(innerHTML)
-
-
-
-
 
 #decision tree or multiclass
 
