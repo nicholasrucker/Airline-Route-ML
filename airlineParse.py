@@ -10,5 +10,8 @@ dataFrame = pd.DataFrame()
 
 readHTML = open("chs-destination_html/<chs-desination2>.html", "r")
 
-webSoup = BeautifulSoup(readHTML.read(), 'html.parser')
+webSoup = BeautifulSoup(readHTML.read(), 'lxml')
 readHTML.close()
+
+print(webSoup)
+
