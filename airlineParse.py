@@ -2,6 +2,7 @@ import os
 from bs4 import BeautifulSoup
 import glob
 import pandas as pd
+import re
 
 if not os.path.exists("parsed_results"):
 	os.mkdir("parsed_results")
@@ -13,47 +14,55 @@ readHTML = open("chs-destination_html/<chs-desination2>.html", "r")
 webSoup = BeautifulSoup(readHTML.read(), 'lxml')
 readHTML.close()
 
-airlineContainer = webSoup.find('div', class_ = 'grid-container standard-padding')
+i = 0
 
-airline = airlineContainer.find('div', class_ = 'secondary-content overflow-ellipsis inline-children').span.text.strip()
+for airlineContainer in webSoup.find_all('div', class_ = 'grid-container standard-padding'):
 
-price = airlineContainer.find('div', class_ = 'uitk-col price-details-container all-col-fill').span.text.strip()
+	airline = airlineContainer.find('div', class_ = 'secondary-content overflow-ellipsis inline-children').span.text.strip()
 
-stops = airlineContainer.find('span', class_ = 'number-stops').text.strip()
+	price = airlineContainer.find('div', class_ = 'uitk-col price-details-container all-col-fill')['data-test-price-per-traveler']
+	price = str(price)
+	price = re.sub(r'[$]', '', price)
 
-travelTime = airlineContainer.find('span', class_ = 'duration-emphasis').text.strip()
+	stops = airlineContainer.find('span', class_ = 'number-stops').text.strip()
 
-departure = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.strip()[:3]
+	travelTime = airlineContainer.find('span', class_ = 'duration-emphasis').text.strip()
 
-destination = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.strip()[:3]
+	departure = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.strip()[:3]
 
-if stops == 1:
-	layover = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.next_sibling.next_sibling.strip()[:3]
-	print(layover)
+	destination = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling
+	destination = str(destination)
+	destination = re.sub(r'[^A-Za-z]', '', destination)
 
+	if stops == 1:
+		layover = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.next_sibling.next_sibling.strip()[:3]
+		print(layover)
 
+####################################################################################################################################################################################
 
+	print("Result", i)
+	print("The airline is", airline)
 
-print("The airline is", airline)
+	print("The price of the ticket is", price)
 
-print("The price of the ticket is", price)
+	print("The total travel time is", travelTime)
 
-print("The total travel time is", travelTime)
+	if stops == "(Nonstop)":
+		stops = 0
+		print("There are", stops,  "stops")
+	else:
+		stops = 1
+		("There is", stops, "stop")
 
-if stops == "(Nonstop)":
-	stops = 0
-	print("There are", stops,  "stops")
-else:
-	stops = 1
-	("There is", stops, "stop")
+	print("The flight leaves from", departure)
 
-print("The flight leaves from", departure)
+	if stops == 1:
+		layover = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.next_sibling.next_sibling.strip()[:3]
+	else:
+		layover = "N/A"
 
-if stops == 1:
-	layover = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.next_sibling.next_sibling.strip()[:3]
-else:
-	layover = "N/A"
+	print("There is a layover in", layover)
 
-print("There is a layover in", layover)
+	print("The flight arrives in", destination)
 
-print("The flight arrives in", destination)
+	i = i + 1
