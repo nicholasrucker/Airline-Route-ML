@@ -29,7 +29,7 @@ innerHTML = browser.execute_script("return document.body.innerHTML")
 
 # A file is created with the destination city in the file name and the HTML is written to it
 # You write to the file with just 'w' instead of 'wb' because the htlm is of type 'string' and not 'byte'
-outputFile = open("chs-destination_html/<chs-desination2>.html", "w")
+outputFile = open("chs-destination_html/<chs-desination4>.html", "w")
 outputFile.write(innerHTML)
 
 #decision tree or multiclass

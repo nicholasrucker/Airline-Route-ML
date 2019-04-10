@@ -19,4 +19,19 @@ airline = airlineContainer.find('div', class_ = 'secondary-content overflow-elli
 print(airline)
 
 stops = airlineContainer.find('span', class_ = 'number-stops').text.strip()
+
+if stops == "(Nonstop)":
+	stops = 0
+else:
+	stops = 1
+
+departure = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.strip()[:3]
+
+destination = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.strip()[:3]
+
 print(stops)
+
+print(departure)
+
+print(destination)
+
