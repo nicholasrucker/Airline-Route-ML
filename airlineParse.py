@@ -14,7 +14,7 @@ readHTML = open("chs-destination_html/<chs-desination2>.html", "r")
 webSoup = BeautifulSoup(readHTML.read(), 'lxml')
 readHTML.close()
 
-i = 0
+i = 1
 
 for airlineContainer in webSoup.find_all('div', class_ = 'grid-container standard-padding'):
 
@@ -34,35 +34,32 @@ for airlineContainer in webSoup.find_all('div', class_ = 'grid-container standar
 	destination = str(destination)
 	destination = re.sub(r'[^A-Za-z]', '', destination)
 
-	if stops == 1:
-		layover = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.next_sibling.next_sibling.strip()[:3]
-		print(layover)
-
 ####################################################################################################################################################################################
 
-	print("Result", i)
+	if stops == "(Nonstop)":
+		stops = 0
+		print("Result", i, "has", stops,  "stops")
+	else:
+		stops = 1
+		print("Result", i, "has", stops,  "stop")
+
 	print("The airline is", airline)
 
 	print("The price of the ticket is", price)
 
 	print("The total travel time is", travelTime)
 
-	if stops == "(Nonstop)":
-		stops = 0
-		print("There are", stops,  "stops")
-	else:
-		stops = 1
-		("There is", stops, "stop")
-
 	print("The flight leaves from", departure)
 
 	if stops == 1:
-		layover = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.next_sibling.next_sibling.strip()[:3]
+		layover = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.next_sibling.span['data-stop-layover']
 	else:
 		layover = "N/A"
 
 	print("There is a layover in", layover)
 
 	print("The flight arrives in", destination)
+
+	print()
 
 	i = i + 1
