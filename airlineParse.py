@@ -16,22 +16,44 @@ readHTML.close()
 airlineContainer = webSoup.find('div', class_ = 'grid-container standard-padding')
 
 airline = airlineContainer.find('div', class_ = 'secondary-content overflow-ellipsis inline-children').span.text.strip()
-print(airline)
+
+price = airlineContainer.find('div', class_ = 'uitk-col price-details-container all-col-fill').span.text.strip()
 
 stops = airlineContainer.find('span', class_ = 'number-stops').text.strip()
 
-if stops == "(Nonstop)":
-	stops = 0
-else:
-	stops = 1
+travelTime = airlineContainer.find('span', class_ = 'duration-emphasis').text.strip()
 
 departure = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.strip()[:3]
 
 destination = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.next_sibling.next_sibling.next_sibling.next_sibling.strip()[:3]
 
-print(stops)
+if stops == 1:
+	layover = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.next_sibling.next_sibling.strip()[:3]
+	print(layover)
 
-print(departure)
 
-print(destination)
 
+
+print("The airline is", airline)
+
+print("The price of the ticket is", price)
+
+print("The total travel time is", travelTime)
+
+if stops == "(Nonstop)":
+	stops = 0
+	print("There are", stops,  "stops")
+else:
+	stops = 1
+	("There is", stops, "stop")
+
+print("The flight leaves from", departure)
+
+if stops == 1:
+	layover = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.next_sibling.next_sibling.strip()[:3]
+else:
+	layover = "N/A"
+
+print("There is a layover in", layover)
+
+print("The flight arrives in", destination)
