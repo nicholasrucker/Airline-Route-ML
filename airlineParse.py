@@ -13,5 +13,10 @@ readHTML = open("chs-destination_html/<chs-desination2>.html", "r")
 webSoup = BeautifulSoup(readHTML.read(), 'lxml')
 readHTML.close()
 
-print(webSoup)
+airlineContainer = webSoup.find('div', class_ = 'grid-container standard-padding')
 
+airline = airlineContainer.find('div', class_ = 'secondary-content overflow-ellipsis inline-children').span.text.strip()
+print(airline)
+
+stops = airlineContainer.find('span', class_ = 'number-stops').text.strip()
+print(stops)
