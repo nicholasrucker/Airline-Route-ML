@@ -26,3 +26,5 @@ airportDict = {value : round(random.random() * 100) for value in airportSet}
 airlineDict = {value : round(random.random() * 100) for value in airlineSet}
 print(airportDict)
 print(airlineDict)
+
+df.to_csv("parsed_results/flight_dataset.csv")
