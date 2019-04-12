@@ -10,20 +10,14 @@ if not os.path.exists("parsed_results"):
 
 j = 1
 
+dataFrame = pd.DataFrame()
+
 for file in glob.glob("flight_html/*.html"):
-
-	print("Parsing file", file)
-	print()
-	print()
-
-	dataFrame = pd.DataFrame()
 
 	readHTML = open(file, "r")
 
 	webSoup = BeautifulSoup(readHTML.read(), 'lxml')
 	readHTML.close()
-
-	i = 1
 
 	for airlineContainer in webSoup.find_all('div', class_ = 'grid-container standard-padding'):
 
@@ -36,6 +30,13 @@ for file in glob.glob("flight_html/*.html"):
 		stops = airlineContainer.find('span', class_ = 'number-stops').text.strip()
 
 		travelTime = airlineContainer.find('span', class_ = 'duration-emphasis').text.strip()
+		travelTime = str(travelTime)
+		
+		travelTime = re.sub(r'[h,m]', '', travelTime)
+		travelTime = re.findall(r'\S+', travelTime)
+
+		travelTime[1] = round(float(travelTime[1]) / 60 * 100) / 100
+		travelTime[0] = float(travelTime[0]) + float(travelTime[1])
 
 		departure = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.strip()[:3]
 
@@ -43,32 +44,26 @@ for file in glob.glob("flight_html/*.html"):
 		destination = str(destination)
 		destination = re.sub(r'[^A-Za-z]', '', destination)
 
-	####################################################################################################################################################################################
-
 		if stops == "(Nonstop)":
 			stops = 0
-			print("Result", i, "has", stops,  "stops")
+			layover = "ZZZ"
 		else:
-			stops = 1
-			print("Result", i, "has", stops,  "stop")
-
-		print("The airline is", airline)
-
-		print("The price of the ticket is", price)
-
-		print("The total travel time is", travelTime)
-
-		print("The flight leaves from", departure)
-
-		if stops == 1:
 			layover = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.next_sibling.span['data-stop-layover']
-		else:
-			layover = "N/A"
+			stops = str(stops)
+			stops = re.sub(r'[^0-9]', '', stops)
+			
+		dataFrame = dataFrame.append({
+																	'airline' : airline,
+																	'price' : price,
+																	'stops' : stops,
+																	'travelTime' : travelTime[0],
+																	'departure' : departure,
+																	'layover' : layover,
+																	'destination' : destination
+																	}, ignore_index = True)
+		print("Pasred",j,"results")
 
-		print("There is a layover in", layover)
+		j = j + 1
 
-		print("The flight arrives in", destination)
+dataFrame.to_csv("parsed_results/flight_dataset.csv")
 
-		print()
-
-		i = i + 1
