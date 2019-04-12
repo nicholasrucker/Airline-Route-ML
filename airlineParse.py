@@ -52,18 +52,18 @@ for file in glob.glob("flight_html/*.html"):
 			stops = str(stops)
 			stops = re.sub(r'[^0-9]', '', stops)
 			
-		dataFrame = dataFrame.append({
-																	'airline' : airline,
-																	'price' : price,
-																	'stops' : stops,
-																	'travelTime' : travelTime[0],
-																	'departure' : departure,
-																	'layover' : layover,
-																	'destination' : destination
-																	}, ignore_index = True)
-		print("Pasred",j,"results")
+		if airline != "Multiple Airlines" and int(stops) < 2:
+			dataFrame = dataFrame.append({
+																		'airline' : airline,
+																		'price' : price,
+																		'stops' : stops,
+																		'travelTime' : travelTime[0],
+																		'departure' : departure,
+																		'layover' : layover,
+																		'destination' : destination
+																		}, ignore_index = True)
+			print("Pasred",j,"results")
+			j = j + 1
 
-		j = j + 1
-
-dataFrame.to_csv("parsed_results/flight_dataset.csv")
+dataFrame.to_csv("parsed_results/flight_datasetTest.csv")
 
