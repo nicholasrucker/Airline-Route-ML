@@ -6,8 +6,8 @@ from selenium import webdriver
 
 # This will check to see if there is a directory for the flight data HTML
 # If there is not one, one will be made
-if not os.path.exists("flight_html"):
-	os.mkdir("flight_html")
+if not os.path.exists("flightHtml"):
+	os.mkdir("flightHtml")
 
 # Here we are declaring our web browser as Chrome
 # This can be any browser you have installed on your computer 
@@ -38,7 +38,7 @@ for airport in airports:
 
 	# A file is created with the destination city in the file name and the HTML is written to it
 	# You write to the file with just 'w' instead of 'wb' because the htlm is of type 'string' and not 'byte'
-	outputFile = open("flight_html/chs-" + airport + ".html", "w")
+	outputFile = open("flightHtml/chs-" + airport + ".html", "w")
 	outputFile.write(innerHTML)
 
 	time.sleep(20)

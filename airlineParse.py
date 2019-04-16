@@ -5,14 +5,14 @@ import pandas as pd
 import re
 import glob
 
-if not os.path.exists("parsed_results"):
-	os.mkdir("parsed_results")
+if not os.path.exists("parsedResults"):
+	os.mkdir("parsedResults")
 
 j = 1
 
 dataFrame = pd.DataFrame()
 
-for file in glob.glob("flight_html/*.html"):
+for file in glob.glob("flightHtml/*.html"):
 
 	readHTML = open(file, "r")
 
@@ -65,5 +65,5 @@ for file in glob.glob("flight_html/*.html"):
 			print("Pasred",j,"results")
 			j = j + 1
 
-dataFrame.to_csv("parsed_results/flight_datasetTest.csv")
+dataFrame.to_csv("parsedResults/flightDataset.csv")
 
