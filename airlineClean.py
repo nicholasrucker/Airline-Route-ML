@@ -33,18 +33,3 @@ if not os.path.exists("cleanedHtml"):
 
 	df.join(df2, how = 'outer').to_csv("cleanedHtml/cleanFlightDataset.csv")
 
-
-learningDF = pd.read_csv("cleanedHtml/cleanFlightDataset.csv")
-
-data = learningDF.iloc[:,12:13]
-
-target = learningDF.iloc[:,9].values
-
-for i in range (1, 15):
-	knn = KNeighborsClassifier(n_neighbors = i)
-	knn.fit(data, target)
-	testData = [
-							[25]]
-	predictionResults = knn.predict(testData)
-
-	print("KNN metric for", i, "clusters:", predictionResults)
