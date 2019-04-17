@@ -13,25 +13,28 @@ def getCoord(browser, city):
 
 	username = browser.find_element_by_id("address") 
 
+	# Add ', <country airport is located in>'
+	city = city + ", usa"
 
 	username.send_keys(city)
-
 
 	submitButton = browser.find_element_by_id("btnGetGpsCoordinates") 
 
 	submitButton.click() 
 
-	time.sleep(2)
+	time.sleep(1)
 
 	innerHTML = browser.execute_script("return document.body.innerHTML")
 
 	lati = browser.find_element_by_id("latitude").get_attribute("value")
 	longi = browser.find_element_by_id("longitude").get_attribute("value")
 
-	print("Latitude is: ", lati)
-	print("Longitude is: ", longi)
+	return lati, longi
 
 
 browser = webdriver.Chrome()
-chs = "chs"
-getCoord(browser, chs)
+dtw = "DTW"
+
+lat, longi = getCoord(browser, dtw)
+print("latitude is: ", lat)
+print("longitude is: ", longi)

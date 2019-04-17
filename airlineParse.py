@@ -4,13 +4,21 @@ import glob
 import pandas as pd
 import re
 import glob
+from lonlat import getCoord
+import time
+from selenium import webdriver
 
 if not os.path.exists("parsedResults"):
 	os.mkdir("parsedResults")
 
 j = 1
 
+browser = webdriver.Chrome()
+
 dataFrame = pd.DataFrame()
+
+latitudeDict = {'AAA' : 10.000}
+longitudeDict = {'CCC' : 10.000}
 
 for file in glob.glob("flightHtml/*.html"):
 
@@ -51,8 +59,24 @@ for file in glob.glob("flightHtml/*.html"):
 			layover = airlineContainer.find('div', class_ = 'secondary-content no-wrap').span.next_sibling.next_sibling.span['data-stop-layover']
 			stops = str(stops)
 			stops = re.sub(r'[^0-9]', '', stops)
-			
+
 		if airline != "Multiple Airlines" and int(stops) < 2:
+
+			if not departure in latitudeDict:
+				departureLat, departureLong = getCoord(browser, str(departure))
+				latitudeDict[departure] = departureLat
+				longitudeDict[departure] = departureLong
+
+			if not layover in latitudeDict:
+				layoverLat, layoverLong = getCoord(browser, str(layover))
+				latitudeDict[layover] = layoverLat
+				longitudeDict[layover] = layoverLong
+
+			if not destination in latitudeDict:
+				destinationLat, destinationLong = getCoord(browser, str(destination))
+				latitudeDict[destination] = destinationLat
+				longitudeDict[destination] = destinationLong
+				
 			dataFrame = dataFrame.append({
 																		'airline' : airline,
 																		'price' : price,
@@ -60,10 +84,16 @@ for file in glob.glob("flightHtml/*.html"):
 																		'travelTime' : travelTime[0],
 																		'departure' : departure,
 																		'layover' : layover,
-																		'destination' : destination
+																		'destination' : destination,
+																		'departureLat' : latitudeDict[departure],
+																		'departureLong' : longitudeDict[departure],
+																		'destinationLat' : latitudeDict[destination],
+																		'destinationLong' : longitudeDict[destination],
+																		'layoverLat' : latitudeDict[layover],
+																		'layoverLong' : longitudeDict[layover]
 																		}, ignore_index = True)
 			print("Pasred",j,"results")
 			j = j + 1
 
-dataFrame.to_csv("parsedResults/flightDataset.csv")
+dataFrame.to_csv("parsedResults/flightDatasetNew.csv")
 
