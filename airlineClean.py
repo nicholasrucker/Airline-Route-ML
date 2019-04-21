@@ -12,7 +12,6 @@ if not os.path.exists("cleanedHtml"):
 	df2 = pd.DataFrame()
 
 	airlineSet = {'Delta'}
-	airportSet = {'CHS'}
 
 	for index, row in df.iloc[1:].iterrows():
 	  airlineSet.add(row['airline'])

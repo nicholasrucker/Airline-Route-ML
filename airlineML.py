@@ -1,47 +1,45 @@
 import pandas as pd  
-from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import confusion_matrix
 from sklearn.neighbors import KNeighborsRegressor
 
 dataset = pd.read_csv("parsedResults/flightDatasetNew.csv")
 
+airlineMap = {'American Airlines' : 66}
+airportMap = {32.885193 : 'CHS'}
+
+for index, row in dataset.iloc[1:].iterrows():
+	airlineMap[row['airline']] = row['airlineCode']
+	airportMap[row['departureLat']] = row['departure']
+	airportMap[row['destinationLat']] = row['destination']
+	airportMap[row['layoverLat']] = row['layover']
+
+print(list(airlineMap.keys()))
+print('Which airline would you like to fly from CLT to LGA? (Match the case)')
+firstAirline = input('-->')
+print('Which airline would you like to fly from SEA to ATL? (Match the case)')
+secondAirline = input('-->')
+print('Which airline would you like to fly from EWR to SFO? (Match the case)')
+thirdAirline = input('-->')
+
+
 data = dataset.iloc[:, [4, 5, 7, 8, 15]]
 target = dataset.iloc[:,10:12].values
 
-#dataTrain, dataTest, targetTrain, targetTest = train_test_split(data, target, test_size = .2)
-#decisionTreeMachine = tree.DecisionTreeClassifier(criterion="gini")
-#decisionTreeMachine.fit(dataTrain, targetTrain)
-
-#predictions = decisionTreeMachine.predict(dataTest)
-
-#print(accuracy_score(targetTest, predictions))
-
-#print(confusion_matrix(targetTest, predictions))
-
-
-reg1 = DecisionTreeRegressor(max_depth=3)
-
-reg1.fit(data, target)
-
 predictX = [
-						[35.220448, -80.94377, 40.77289, -73.868805, 66],
-						[40.69297, -74.17799, 32.885193, -80.03694, 91],
+						[35.220448, -80.94377, 40.77289, -73.868805, airlineMap[firstAirline]],
+						[47.44359, -122.302505, 33.640545, -84.43341, airlineMap[secondAirline]],
+						[40.69297, -74.17799, 37.616714, -122.38709, airlineMap[thirdAirline]],
 						]
 
 
+knn = KNeighborsRegressor(n_neighbors = 1)
+knn.fit(data, target)
 
 
-y1 = reg1.predict(predictX)
+predictionResults = knn.predict(predictX)
 
-print("Decision tree regressor\n", y1)
+print("Clustering with 1 cluster\n", predictionResults)
 
-for i in range (1, 10):
-
-	knn = KNeighborsRegressor(n_neighbors = i)
-	knn.fit(data, target)
-	predictionResults = knn.predict(predictX)
-
-	print("Clustering with", i, "clusters\n", predictionResults)
+print("Flying from CLT to LGA on", firstAirline, "would likely result in a layover in",airportMap[predictionResults[0][0]])
+print("Flying from SEA to ATL on", secondAirline, "would likely result in a layover in",airportMap[predictionResults[1][0]])
+print("Flying from EWR to SFO on", secondAirline, "would likely result in a layover in",airportMap[predictionResults[2][0]])
 
