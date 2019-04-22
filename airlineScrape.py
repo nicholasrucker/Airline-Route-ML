@@ -42,9 +42,3 @@ for airport in airports:
 	outputFile.write(innerHTML)
 
 	time.sleep(20)
-
-
-
-#decision tree or multiclass
-
-#look at preprocessing
