@@ -34,7 +34,7 @@ airlineScrape.py
 - The HTML is stored in the flightHtml directory, which will be created for you if not already there.
 - The default browser used to scrape with selenium is Chrome, so if you do not have Chrome installed it would be easiest to install it.
   However, instructions are provided in the code to guide you on how to use a different browser.
-- To compile the code type the following command (with python3)
+- To compile use the following command (using python3)
 ```
 python3 airlineScrape.py
 ```
@@ -55,7 +55,7 @@ airlineParse.py
 - The lonlat.py function is called.
 - The number of entries to the DataFrame will be displayed in the terminal
 - The parsed results will be stored in the parsedResults directory as flightDatasetNew.csv which will be created for you
-- To compile the code type the following command (with python3)
+- To compile use the following command (using python3)
 ```
 python3 airlineParse.py
 ```
