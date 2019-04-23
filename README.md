@@ -79,7 +79,7 @@ airlineML.py
 - You can change the coordinates of the departure and arrival airport and add more tests if you would like.
   - I chose those three test cases to cover a diverse range of flights geographically.
 - You could get the coordinates from the dataset or add a call to the getCoord function in lonlat.py
- - If you decide to add the getCoord function make sure you add ' from lonlat import getCoord ' to the top of the file.
+  - If you decide to add the getCoord function make sure you add ' from lonlat import getCoord ' to the top of the file.
 - After entering an airline the route will print to the console
 - To compile use the following command (using python3)
 ```
