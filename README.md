@@ -1,10 +1,11 @@
 # ECON498_ps1
 
 Before trying to run any of the code make sure you have the following packages:
->lxml, requests, beautifulsoup4, selenium, and regex
+>pandas, lxml, requests, beautifulsoup4, selenium, and regex
 
 Below are the python3 commands to install any of the packages you may not have
 ```
+pip install pandas
 pip install lxml
 pip install requests
 pip install beautifulsoup4
