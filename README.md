@@ -5,6 +5,8 @@ Before trying to run any of the code make sure you have the following packages:
 
 Below are the python3 commands to install any of the packages you may not have
 ```
+pip install scoikit-learn
+pipi install joblib
 pip install pandas
 pip install lxml
 pip install requests
